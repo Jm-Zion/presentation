@@ -59,18 +59,25 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const one = <h1>Hi, my name is</h1>;
-  const two = <h2 className="big-heading">Brittany Chiang.</h2>;
-  const three = <h3 className="big-heading">I build things for the web.</h3>;
+  const one = (
+    <div className="typewriter">
+      <h1>Hi, my name is</h1>
+    </div>
+  );
+  const two = <h2 className="big-heading">Jérémy Barbe,</h2>;
+  const three = <h3 className="big-heading">I build things for the mobile.</h3>;
   const four = (
     <>
       <p>
-        I’m a software engineer specializing in building (and occasionally designing) exceptional
-        digital experiences. Currently, I’m focused on building accessible, human-centered products
-        at{' '}
-        <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
-          Upstatement
-        </a>
+        I'm your friendly neighborhood Full Stack Developer. From crafting React-Native elegance to
+        technical leadership in cool projects, I'm your go-to. Doing my best to make the tech
+        journey a blast.
+        <p>
+          Working at{' '}
+          <a href="https://winzana.com/" target="_blank" rel="noreferrer">
+            Winzana
+          </a>
+        </p>{' '}
         .
       </p>
     </>

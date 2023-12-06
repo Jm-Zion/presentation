@@ -85,12 +85,16 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
             test: /miniraf/,
             use: loaders.null(),
           },
+          { test: /\.(riv)$/i, type: 'assert/resource' },
         ],
       },
     });
   }
 
   actions.setWebpackConfig({
+    module: {
+      rules: [{ test: /\.(riv)$/i, type: 'asset/resource' }],
+    },
     resolve: {
       alias: {
         '@components': path.resolve(__dirname, 'src/components'),

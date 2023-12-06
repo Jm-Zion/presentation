@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { StaticImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
+import LoaderRiv from './../../images/loader.riv';
+
 import { usePrefersReducedMotion } from '@hooks';
+import { useRive } from '@rive-app/react-canvas';
 
+const STATE_MACHINE_NAME = 'State Machine 1';
 const StyledAboutSection = styled.section`
-  max-width: 900px;
-
   .inner {
     display: grid;
     grid-template-columns: 3fr 2fr;
@@ -48,11 +49,26 @@ const StyledText = styled.div`
 `;
 const StyledPic = styled.div`
   position: relative;
-  max-width: 300px;
+  width: 500px;
+  height: 500px;
+  margin: 50px auto 0;
+
+  @media (max-width: 900px) {
+    margin: 50px auto 0;
+    width: 340px;
+    height: 340px;
+  }
+
+  @media (max-width: 800px) {
+    margin: 50px auto 0;
+    width: 400px;
+    height: 400px;
+  }
 
   @media (max-width: 768px) {
     margin: 50px auto 0;
-    width: 70%;
+    width: 100%;
+    height: 300px;
   }
 
   .wrapper {
@@ -61,7 +77,7 @@ const StyledPic = styled.div`
     position: relative;
     width: 100%;
     border-radius: var(--border-radius);
-    background-color: var(--green);
+    /* background-color: var(--green); */
 
     &:hover,
     &:focus {
@@ -112,10 +128,40 @@ const StyledPic = styled.div`
     }
   }
 `;
+function useOnScreen(ref) {
+  const [isIntersecting, setIntersecting] = React.useState(false);
 
+  const observer = React.useMemo(
+    () => new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting)),
+    [ref],
+  );
+
+  useEffect(() => {
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return isIntersecting;
+}
 const About = () => {
+  const divRef = React.useRef(null);
+  const isVisible = useOnScreen(divRef);
+
+  const { rive, RiveComponent } = useRive({
+    src: LoaderRiv,
+    stateMachines: STATE_MACHINE_NAME,
+    artboard: 'FUI Login Screen',
+    autoplay: false,
+  });
+
   const revealContainer = useRef(null);
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (isVisible && rive) {
+      rive.play();
+    }
+  }, [isVisible, rive]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -125,7 +171,18 @@ const About = () => {
     sr.reveal(revealContainer.current, srConfig());
   }, []);
 
-  const skills = ['JavaScript (ES6+)', 'TypeScript', 'React', 'Eleventy', 'Node.js', 'WordPress'];
+  const skills = [
+    'JavaScript (ES6+)',
+    'TypeScript',
+    'React',
+    'Node.js',
+    'React-Native',
+    'Nestjs',
+    'Hygen',
+    'Fastlane',
+    'Android',
+    'iOS',
+  ];
 
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
@@ -135,30 +192,20 @@ const About = () => {
         <StyledText>
           <div>
             <p>
-              Hello! My name is Brittany and I enjoy creating things that live on the internet. My
-              interest in web development started back in 2012 when I decided to try editing custom
-              Tumblr themes — turns out hacking together a custom reblog button taught me a lot
-              about HTML &amp; CSS!
+              Your go-to Full Stack Developer with a twist. Whether it's crafting sleek React-Native
+              interfaces, dancing with the React.js orchestra, or diving into the wild worlds of
+              NestJS and Golang—I'm all in.
             </p>
-
             <p>
-              Fast-forward to today, and I’ve had the privilege of working at{' '}
-              <a href="https://us.mullenlowe.com/">an advertising agency</a>,{' '}
-              <a href="https://starry.com/">a start-up</a>,{' '}
-              <a href="https://www.apple.com/">a huge corporation</a>, and{' '}
-              <a href="https://scout.camd.northeastern.edu/">a student-led design studio</a>. My
-              main focus these days is building accessible, inclusive products and digital
-              experiences at <a href="https://upstatement.com/">Upstatement</a> for a variety of
-              clients.
+              Do you know what has won me over recently ? Creating tools that make fellow
+              developers' lives easier.
             </p>
-
             <p>
-              I also recently{' '}
-              <a href="https://www.newline.co/courses/build-a-spotify-connected-app">
-                launched a course
-              </a>{' '}
-              that covers everything you need to build a web app with the Spotify API using Node
-              &amp; React.
+              I'm the person who sets up the stage for your applications, handling from code quality
+              checks to releases pipelines. Oh, and did I mention I've been the tech leading some
+              cool projects ? Let's build something awesome together. Beyond the code, I'm your
+              adaptable ally. Socially, I'm the team energizer, fostering collaboration and making
+              the tech journey enjoyable.
             </p>
 
             <p>Here are a few technologies I’ve been working with recently:</p>
@@ -169,17 +216,17 @@ const About = () => {
           </ul>
         </StyledText>
 
-        <StyledPic>
-          <div className="wrapper">
-            <StaticImage
-              className="img"
-              src="../../images/me.jpg"
-              width={500}
-              quality={95}
-              formats={['AUTO', 'WEBP', 'AVIF']}
-              alt="Headshot"
-            />
-          </div>
+        <StyledPic ref={divRef}>
+          <RiveComponent style={{ height: '100%', width: '100%' }} />
+
+          {/*          <StaticImage
+            className="img"
+            src="../../images/me.jpg"
+            width={500}
+            quality={95}
+            formats={['AUTO', 'WEBP', 'AVIF']}
+            alt="Headshot"
+          />*/}
         </StyledPic>
       </div>
     </StyledAboutSection>

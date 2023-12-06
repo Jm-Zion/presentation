@@ -8,7 +8,7 @@ import sr from '@utils/sr';
 import { usePrefersReducedMotion } from '@hooks';
 
 const StyledJobsSection = styled.section`
-  max-width: 700px;
+  // max-width: 700px;
 
   .inner {
     display: flex;
@@ -30,6 +30,7 @@ const StyledTabList = styled.div`
   width: max-content;
   padding: 0;
   margin: 0;
+  margin-left: 50px;
   list-style: none;
 
   @media (max-width: 600px) {
@@ -97,6 +98,14 @@ const StyledTabButton = styled.button`
   &:focus {
     background-color: var(--light-navy);
   }
+
+  .year {
+    position: absolute;
+    left: -50px;
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
 `;
 
 const StyledHighlight = styled.div`
@@ -129,10 +138,9 @@ const StyledHighlight = styled.div`
 const StyledTabPanels = styled.div`
   position: relative;
   width: 100%;
-  margin-left: 20px;
 
   @media (max-width: 600px) {
-    margin-left: 0;
+    margin-left: 0px;
   }
 `;
 
@@ -143,6 +151,11 @@ const StyledTabPanel = styled.div`
 
   ul {
     ${({ theme }) => theme.mixins.fancyList};
+  }
+
+  .year {
+    position: absolute;
+    left: -50px;
   }
 
   h3 {
@@ -157,8 +170,15 @@ const StyledTabPanel = styled.div`
   }
 
   .range {
-    margin-bottom: 25px;
     color: var(--light-slate);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+  }
+
+  .subject {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    color: var(--white);
     font-family: var(--font-mono);
     font-size: var(--fz-xs);
   }
@@ -174,6 +194,8 @@ const Jobs = () => {
         edges {
           node {
             frontmatter {
+              subject
+              date
               title
               company
               location
@@ -244,13 +266,13 @@ const Jobs = () => {
 
   return (
     <StyledJobsSection id="jobs" ref={revealContainer}>
-      <h2 className="numbered-heading">Where I’ve Worked</h2>
+      <h2 className="numbered-heading">My Missions at Winzana </h2>
 
       <div className="inner">
         <StyledTabList role="tablist" aria-label="Job tabs" onKeyDown={e => onKeyDown(e)}>
           {jobsData &&
             jobsData.map(({ node }, i) => {
-              const { company } = node.frontmatter;
+              const { company, date } = node.frontmatter;
               return (
                 <StyledTabButton
                   key={i}
@@ -263,6 +285,7 @@ const Jobs = () => {
                   aria-selected={activeTabId === i ? true : false}
                   aria-controls={`panel-${i}`}>
                   <span>{company}</span>
+                  <span className="year">{date.split('-')[0]}</span>
                 </StyledTabButton>
               );
             })}
@@ -273,7 +296,7 @@ const Jobs = () => {
           {jobsData &&
             jobsData.map(({ node }, i) => {
               const { frontmatter, html } = node;
-              const { title, url, company, range } = frontmatter;
+              const { title, url, company, range, subject } = frontmatter;
 
               return (
                 <CSSTransition key={i} in={activeTabId === i} timeout={250} classNames="fade">
@@ -285,7 +308,7 @@ const Jobs = () => {
                     aria-hidden={activeTabId !== i}
                     hidden={activeTabId !== i}>
                     <h3>
-                      <span>{title}</span>
+                      <span>{title} for</span>
                       <span className="company">
                         &nbsp;@&nbsp;
                         <a href={url} className="inline-link">
@@ -293,8 +316,8 @@ const Jobs = () => {
                         </a>
                       </span>
                     </h3>
-
                     <p className="range">{range}</p>
+                    <p className="subject">■ {subject}</p>
 
                     <div dangerouslySetInnerHTML={{ __html: html }} />
                   </StyledTabPanel>

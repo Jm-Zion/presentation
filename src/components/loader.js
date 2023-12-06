@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import LoaderRiv from './../images/loader.riv';
 import PropTypes from 'prop-types';
-import anime from 'animejs';
+import { useStateMachineInput, useRive } from '@rive-app/react-canvas';
 import styled from 'styled-components';
-import { IconLoader } from '@components/icons';
 
+const STATE_MACHINE_NAME = 'State Machine 1';
+const ON_PRESSED_INPUT_NAME = 'pressed';
 const StyledLoader = styled.div`
   ${({ theme }) => theme.mixins.flexCenter};
   position: fixed;
@@ -14,8 +15,10 @@ const StyledLoader = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--dark-navy);
+  background-color: var(--navy);
   z-index: 99;
+  transition: var(--transition);
+  opacity: ${props => (props.startUnmount ? 0 : 1)};
 
   .logo-wrapper {
     width: max-content;
@@ -34,59 +37,65 @@ const StyledLoader = styled.div`
       }
     }
   }
+
+  .fade-out-image {
+    animation: fadeOut 1s;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 `;
 
 const Loader = ({ finishLoading }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted] = useState(false);
+  const [startUnmount, setStartUnmount] = useState(false);
 
-  const animate = () => {
-    const loader = anime.timeline({
-      complete: () => finishLoading(),
-    });
+  const { rive, RiveComponent } = useRive({
+    src: LoaderRiv,
+    stateMachines: STATE_MACHINE_NAME,
+    artboard: 'FUI Login Screen',
+    autoplay: true,
+  });
 
-    loader
-      .add({
-        targets: '#logo path',
-        delay: 300,
-        duration: 1500,
-        easing: 'easeInOutQuart',
-        strokeDashoffset: [anime.setDashoffset, 0],
-      })
-      .add({
-        targets: '#logo #B',
-        duration: 700,
-        easing: 'easeInOutQuart',
-        opacity: 1,
-      })
-      .add({
-        targets: '#logo',
-        delay: 500,
-        duration: 300,
-        easing: 'easeInOutQuart',
-        opacity: 0,
-        scale: 0.1,
-      })
-      .add({
-        targets: '.loader',
-        duration: 200,
-        easing: 'easeInOutQuart',
-        opacity: 0,
-        zIndex: -1,
-      });
-  };
+  const onPressedInput = useStateMachineInput(rive, STATE_MACHINE_NAME, ON_PRESSED_INPUT_NAME);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 10);
-    animate();
-    return () => clearTimeout(timeout);
-  }, []);
+    if (onPressedInput) {
+      setTimeout(() => {
+        setTimeout(() => setStartUnmount(() => true), 1000);
+        onPressedInput.value = true;
+        setTimeout(() => {
+          finishLoading();
+        }, 1700);
+      }, 4000);
+    }
+  }, [onPressedInput]);
+  useEffect(() => {}, []);
 
   return (
-    <StyledLoader className="loader" isMounted={isMounted}>
-      <Helmet bodyAttributes={{ class: `hidden` }} />
-
-      <div className="logo-wrapper">
-        <IconLoader />
+    <StyledLoader
+      className={`loader fade-out-image ${startUnmount ? 'fade-out-image' : ''}`}
+      startUnmount={startUnmount}
+      isMounted={isMounted}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <RiveComponent style={{ width: 500, height: 500 }} />
+        <div style={{ width: 'fit-content' }}>
+          <div className="typewriter">
+            <h5>Identification in progress... &#20;&#20;&#20;</h5>
+          </div>
+        </div>
       </div>
     </StyledLoader>
   );

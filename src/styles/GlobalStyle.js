@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
   ${fonts};
   ${variables};
 
+
   html {
     box-sizing: border-box;
     width: 100%;
@@ -441,6 +442,124 @@ const GlobalStyle = createGlobalStyle`
 
   .gatsby-image-outer-wrapper {
     height: 100%;
+  }
+
+  .link-target-effect a {
+    margin: 20px 20px;
+    padding: 10px 20px;
+    position: relative;
+    -webkit-transition: 0.3s ease-out;
+    -moz-transition: 0.3s ease-out;
+    -o-transition: 0.3s ease-out;
+    transition: 0.3s ease-out;
+  }
+  .link-target-effect a span::before {
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-top: 1px solid var(--green);
+    border-left: 1px solid var(--green);
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    opacity: 0;
+  }
+  .link-target-effect a span::after {
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-right: 1px solid var(--green);
+    border-bottom: 1px solid var(--green);
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    opacity: 0;
+  }
+  .link-target-effect a::before {
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-right: 1px solid var(--green);
+    border-top: 1px solid var(--green);
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    opacity: 0;
+  }
+  .link-target-effect a::after {
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-left: 1px solid var(--green);
+    border-bottom: 1px solid var(--green);
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    opacity: 0;
+  }
+  .link-target-effect a:hover {
+  }
+  .link-target-effect a:hover::before {
+    opacity: 1;
+    right: 5px;
+    top: 5px;
+  }
+  .link-target-effect a:hover::after {
+    opacity: 1;
+    left: 5px;
+    bottom: 5px;
+  }
+  .link-target-effect a:hover span::before {
+    opacity: 1;
+    left: 5px;
+    top: 5px;
+  }
+  .link-target-effect a:hover span::after {
+    opacity: 1;
+    right: 5px;
+    bottom: 5px;
+  }
+
+  /* DEMO-SPECIFIC STYLES */
+  .typewriter h1, h5 {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid var(--green); /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    animation:
+      typing 1.5s steps(30, end),
+      blink-caret .5s step-end infinite;
+  }
+
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--green) }
   }
 
   ${TransitionStyles};

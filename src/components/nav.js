@@ -130,11 +130,9 @@ const StyledLinks = styled.div`
       font-size: var(--fz-xs);
 
       a {
-        padding: 10px;
-
         &:before {
-          content: '0' counter(item) '.';
-          margin-right: 5px;
+          /* content: '0' counter(item) '.'; */
+          /* margin-right: 5px; */
           color: var(--green);
           font-size: var(--fz-xxs);
           text-align: right;
@@ -217,13 +215,14 @@ const Nav = ({ isHome }) => {
         {prefersReducedMotion ? (
           <>
             {Logo}
-
             <StyledLinks>
               <ol>
                 {navLinks &&
                   navLinks.map(({ url, name }, i) => (
                     <li key={i}>
-                      <Link to={url}>{name}</Link>
+                      <Link className="link-target-effect" to={url}>
+                        <span>{name}</span>
+                      </Link>
                     </li>
                   ))}
               </ol>
@@ -234,14 +233,6 @@ const Nav = ({ isHome }) => {
           </>
         ) : (
           <>
-            <TransitionGroup component={null}>
-              {isMounted && (
-                <CSSTransition classNames={fadeClass} timeout={timeout}>
-                  <>{Logo}</>
-                </CSSTransition>
-              )}
-            </TransitionGroup>
-
             <StyledLinks>
               <ol>
                 <TransitionGroup component={null}>
@@ -249,14 +240,18 @@ const Nav = ({ isHome }) => {
                     navLinks &&
                     navLinks.map(({ url, name }, i) => (
                       <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
-                        <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                          <Link to={url}>{name}</Link>
+                        <li
+                          key={i}
+                          className="link-target-effect"
+                          style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
+                          <Link to={url}>
+                            <span>{name}</span>
+                          </Link>
                         </li>
                       </CSSTransition>
                     ))}
                 </TransitionGroup>
               </ol>
-
               <TransitionGroup component={null}>
                 {isMounted && (
                   <CSSTransition classNames={fadeDownClass} timeout={timeout}>

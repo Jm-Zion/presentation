@@ -83,6 +83,7 @@ const StyledProject = styled.li`
       }
     }
     .project-image {
+      z-index: 0;
       grid-column: 1 / 8;
 
       @media (max-width: 768px) {
@@ -124,6 +125,7 @@ const StyledProject = styled.li`
   }
 
   .project-title {
+    z-index: 20;
     color: var(--lightest-slate);
     font-size: clamp(24px, 5vw, 28px);
 

@@ -253,13 +253,13 @@ const Menu = () => {
         </StyledHamburgerButton>
 
         <StyledSidebar menuOpen={menuOpen} aria-hidden={!menuOpen} tabIndex={menuOpen ? 1 : -1}>
-          <nav ref={navRef}>
+          <nav ref={navRef} className="link-target-effect">
             {navLinks && (
               <ol>
                 {navLinks.map(({ url, name }, i) => (
-                  <li key={i}>
+                  <li key={i} className="link-target-effect">
                     <Link to={url} onClick={() => setMenuOpen(false)}>
-                      {name}
+                      <span>{name}</span>
                     </Link>
                   </li>
                 ))}
