@@ -8,7 +8,7 @@ url: ''
 subject: 'React Application for second medical opinion on cancer disease diagnosis'
 ---
 
-- Scheduled, Planned, Build and Test the web application
-- Architectured the application from the ground up
+- Scheduled, Planned, Built and Tested the web application
+- Architected the application from the ground up
 - Boosted the team to reach the very short and close deadline
 - Key Features : Huge images explorer, 2nd opinion workflow

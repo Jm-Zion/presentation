@@ -9,6 +9,6 @@ subject: 'An application that help elder to stay in communication with family th
 ---
 
 - Developed whitebranded application using React Native
-- Architectured the application from the ground up
+- Architected the application from the ground up
 - Implemented two-way synchronization of data between application and server ( Full Offline Support )
 - Key Features : Roles Management, Two-way synchronization

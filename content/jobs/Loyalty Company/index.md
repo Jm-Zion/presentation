@@ -8,5 +8,5 @@ url: ''
 subject: 'Web application to manages sales figures & Email Builder'
 ---
 
-- Architected, Developped and Test the application from scratch.
+- Architected, Developped and Tested the application from scratch.
 - Key Features : Dashboard, Email Builder
