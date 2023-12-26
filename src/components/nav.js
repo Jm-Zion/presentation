@@ -8,6 +8,8 @@ import { loaderDelay } from '@utils';
 import { useScrollDirection, usePrefersReducedMotion } from '@hooks';
 import { Menu } from '@components';
 import { IconLogo, IconHex } from '@components/icons';
+import { logEvent } from 'firebase/analytics';
+import { useAnalytics } from '../utils/analytics';
 
 const StyledHeader = styled.header`
   ${({ theme }) => theme.mixins.flexBetween};
@@ -154,6 +156,7 @@ const Nav = ({ isHome }) => {
   const [scrolledToTop, setScrolledToTop] = useState(true);
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  const app = useAnalytics();
   const handleScroll = () => {
     setScrolledToTop(window.pageYOffset < 50);
   };
@@ -221,7 +224,12 @@ const Nav = ({ isHome }) => {
                 {navLinks &&
                   navLinks.map(({ url, name }, i) => (
                     <li key={i}>
-                      <Link className="link-target-effect" to={url}>
+                      <Link
+                        className="link-target-effect"
+                        to={url}
+                        onClick={() =>
+                          logEvent(app, 'page_view', { page_title: name, page_path: url })
+                        }>
                         <span>{name}</span>
                       </Link>
                     </li>
@@ -254,7 +262,11 @@ const Nav = ({ isHome }) => {
                           key={i}
                           className="link-target-effect"
                           style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                          <Link to={url}>
+                          <Link
+                            to={url}
+                            onClick={() =>
+                              logEvent(app, 'page_view', { page_title: name, page_path: url })
+                            }>
                             <span>{name}</span>
                           </Link>
                         </li>

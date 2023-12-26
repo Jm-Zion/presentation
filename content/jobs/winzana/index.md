@@ -11,5 +11,6 @@ subject: 'React Native Developer Consultant'
 - At Winzana, I've mostly been working as consultant for the others company listed above
 - I've wrote development guidelines for react.js and react-native
 - Worked on many project in React Native and React.js
+- Worked on shared module between React Native & React.js using react-native-web, solito, expo-router
 - Created a platform in Nest.js using hexagonal architecture
 - I'd also setup pipelines for continuous integration & deployment

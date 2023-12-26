@@ -1,7 +1,7 @@
 ---
 date: '2019-09-30'
 title: 'React Native Developer'
-company: 'Kaliop'
+company: '(Confidential)'
 location: 'Montpellier'
 range: '4 Months'
 url: 'https://www.kaliop.com/'

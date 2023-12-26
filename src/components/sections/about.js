@@ -177,6 +177,7 @@ const About = () => {
     'React',
     'Node.js',
     'React-Native',
+    'React-Native-Web',
     'Nestjs',
     'Hygen',
     'Fastlane',

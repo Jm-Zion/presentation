@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useStaticQuery, graphql } from 'gatsby';
+import { useStaticQuery, graphql } from 'gatsby';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
 import { Icon } from '@components/icons';
 import { usePrefersReducedMotion } from '@hooks';
+import { logEvent } from 'firebase/analytics';
+import { useAnalytics } from '../../utils/analytics';
 
 const StyledProjectsSection = styled.section`
   display: flex;
@@ -166,6 +168,8 @@ const StyledProject = styled.li`
 `;
 
 const Projects = () => {
+  const app = useAnalytics();
+
   const data = useStaticQuery(graphql`
     query {
       projects: allMarkdownRemark(
@@ -267,10 +271,6 @@ const Projects = () => {
     <StyledProjectsSection>
       <h2 ref={revealTitle}>Other Noteworthy Projects</h2>
 
-      <Link className="inline-link archive-link" to="/archive" ref={revealArchiveLink}>
-        view the archive
-      </Link>
-
       <ul className="projects-grid">
         {prefersReducedMotion ? (
           <>
@@ -289,6 +289,12 @@ const Projects = () => {
                   timeout={i >= GRID_LIMIT ? (i - GRID_LIMIT) * 300 : 300}
                   exit={false}>
                   <StyledProject
+                    onClick={() => {
+                      logEvent(app, 'sides', {
+                        page_title: node.frontmatter.title,
+                        page_path: node.frontmatter.github,
+                      });
+                    }}
                     key={i}
                     ref={el => (revealProjects.current[i] = el)}
                     style={{

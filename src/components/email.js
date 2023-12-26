@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { email } from '@config';
 import { Side } from '@components';
+import { logEvent } from 'firebase/analytics';
+import { useAnalytics } from '../utils/analytics';
 
 const StyledLinkWrapper = styled.div`
   display: flex;
@@ -35,13 +37,21 @@ const StyledLinkWrapper = styled.div`
   }
 `;
 
-const Email = ({ isHome }) => (
-  <Side isHome={isHome} orientation="right">
-    <StyledLinkWrapper>
-      <a href={`mailto:${email}`}>{email}</a>
-    </StyledLinkWrapper>
-  </Side>
-);
+const Email = ({ isHome }) => {
+  const app = useAnalytics();
+
+  return (
+    <Side isHome={isHome} orientation="right">
+      <StyledLinkWrapper>
+        <a
+          onClick={() => logEvent(app, 'page_view', { page_title: 'send email' })}
+          href={`mailto:${email}`}>
+          {email}
+        </a>
+      </StyledLinkWrapper>
+    </Side>
+  );
+};
 
 Email.propTypes = {
   isHome: PropTypes.bool,

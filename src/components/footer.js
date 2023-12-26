@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Icon } from '@components/icons';
 import { socialMedia } from '@config';
+import { logEvent } from 'firebase/analytics';
+import { useAnalytics } from '../utils/analytics';
 
 const StyledFooter = styled.footer`
   ${({ theme }) => theme.mixins.flexCenter};
@@ -68,6 +70,8 @@ const StyledCredit = styled.div`
 `;
 
 const Footer = () => {
+  const app = useAnalytics();
+
   const [githubInfo, setGitHubInfo] = useState({
     stars: null,
     forks: null,
@@ -96,7 +100,10 @@ const Footer = () => {
           {socialMedia &&
             socialMedia.map(({ name, url }, i) => (
               <li key={i}>
-                <a href={url} aria-label={name}>
+                <a
+                  onClick={() => logEvent(app, 'github', { page_title: name, page_path: url })}
+                  href={url}
+                  aria-label={name}>
                   <Icon name={name} />
                 </a>
               </li>

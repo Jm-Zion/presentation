@@ -6,6 +6,8 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { Icon } from '@components/icons';
 import { usePrefersReducedMotion } from '@hooks';
+import { useAnalytics } from '../../utils/analytics';
+import { logEvent } from 'firebase/analytics';
 
 const StyledProjectsGrid = styled.ul`
   ${({ theme }) => theme.mixins.resetList};
@@ -306,6 +308,7 @@ const StyledProject = styled.li`
 `;
 
 const Featured = () => {
+  const app = useAnalytics();
   const data = useStaticQuery(graphql`
     {
       featured: allMarkdownRemark(
@@ -367,7 +370,7 @@ const Featured = () => {
                     <p className="project-overline">Featured Project</p>
 
                     <h3 className="project-title">
-                      <a href={external}>{title}</a>
+                      <a href={github}>{title}</a>
                     </h3>
 
                     <div
@@ -390,7 +393,12 @@ const Featured = () => {
                         </a>
                       )}
                       {github && (
-                        <a href={github} aria-label="GitHub Link">
+                        <a
+                          href={github}
+                          aria-label="GitHub Link"
+                          onClick={() =>
+                            logEvent(app, 'showcase', { page_title: title, page_path: github })
+                          }>
                           <Icon name="GitHub" />
                         </a>
                       )}
@@ -404,7 +412,11 @@ const Featured = () => {
                 </div>
 
                 <div className="project-image">
-                  <a href={external ? external : github ? github : '#'}>
+                  <a
+                    href={github}
+                    onClick={() =>
+                      logEvent(app, 'showcase', { page_title: title, page_path: github })
+                    }>
                     <GatsbyImage image={image} alt={title} className="img" />
                   </a>
                 </div>

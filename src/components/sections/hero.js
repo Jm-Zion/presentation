@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import TextTransition, { presets } from 'react-text-transition';
 import styled from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
@@ -15,6 +16,18 @@ const StyledHeroSection = styled.section`
   @media (max-height: 700px) and (min-width: 700px), (max-width: 360px) {
     height: auto;
     padding-top: var(--nav-height);
+  }
+
+  .transition {
+    @media (min-width: 1280px) {
+      margin-left: 15px;
+    }
+  }
+
+  .heading-transition {
+    @media (min-width: 1280px) {
+      display: flex;
+    }
   }
 
   h1 {
@@ -46,7 +59,19 @@ const StyledHeroSection = styled.section`
   }
 `;
 
+const TEXTS = ['Mobile', 'Web', 'Toolchain'];
+
 const Hero = () => {
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const intervalId = setInterval(
+      () => setIndex(index => index + 1),
+      3500, // every 3 seconds
+    );
+    return () => clearTimeout(intervalId);
+  }, []);
+
   const [isMounted, setIsMounted] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -65,7 +90,14 @@ const Hero = () => {
     </div>
   );
   const two = <h2 className="big-heading">Jérémy Barbe,</h2>;
-  const three = <h3 className="big-heading">I build things for the mobile.</h3>;
+  const three = (
+    <h3 className="big-heading heading-transition">
+      I build things for the
+      <TextTransition className="transition" springConfig={presets.wobbly}>
+        {TEXTS[index % TEXTS.length]}
+      </TextTransition>
+    </h3>
+  );
   const four = (
     <>
       <p>

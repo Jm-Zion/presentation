@@ -11,6 +11,7 @@ subject: 'Application for prospection management'
 - Setup the code base from the ground up
 - Developed, architected, tested and shipped the application
 - Add automated code quality checks
+- Worked on shared module between React.js Web & Mobile React-Native
 - Setup pipelines for continuous integration & deployment
 - Tested differents javascript engines for the app ( v8 vs hermes vs jsc)
 - Key features : enhanced map system for prospection overview
