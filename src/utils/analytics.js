@@ -4,8 +4,8 @@ import React from 'react';
 const AnalyticsContext = React.createContext();
 
 export const useAnalytics = () => {
-  const { app } = React.useContext(AnalyticsContext);
-  return app.current.analytics;
+  const context = React.useContext(AnalyticsContext);
+  return context?.app?.current?.analytics;
 };
 
 export const AnalyticsProvider = props => {

@@ -2,7 +2,7 @@
 date: '2019-06-21'
 title: 'React Web & Mobile architecture example'
 github: 'https://github.com/Jm-Zion/react-structure-core-exemple'
-external: ''
+external: 'https://github.com/Jm-Zion/react-structure-core-exemple'
 tech:
   - React.js
   - React Native

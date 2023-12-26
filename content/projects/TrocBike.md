@@ -2,7 +2,7 @@
 date: '2021-06-02'
 title: 'Golang'
 github: 'https://github.com/Jm-Zion/troc-bike-go'
-external: ''
+external: 'https://github.com/Jm-Zion/troc-bike-go'
 tech:
   - Golang
 company: 'Winzana'

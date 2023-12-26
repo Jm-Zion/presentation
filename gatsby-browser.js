@@ -3,3 +3,8 @@
  *
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
+
+import React from 'react';
+import { AnalyticsProvider } from './src/utils/analytics';
+
+export const wrapRootElement = ({ element }) => <AnalyticsProvider>{element}</AnalyticsProvider>;
